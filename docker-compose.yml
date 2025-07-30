@@ -6,13 +6,34 @@ services:
     container_name: nest_postgres
     ports:
       - "${DB_PORT}:5432"
-    environment:
+    environment: # Note below
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  nestjs-app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for hot reloading
+      - .:/usr/src/app
+      # Prevent node_modules from being overwritten
+      - /user/src/app/node_modules
+    env_file: .env
+    command: "npm run start:dev"
+
+
 volumes:
   pgdata:
   
+
+  ## Note:
+
+  ## We can replace   environment: POSTGRES_DB: ${DB_NAME}  POSTGRES_USER: ${DB_USERNAME} POSTGRES_PASSWORD: ${DB_PASSWORD}
+  ## with   env_file: .env but the The Postgres container expects specific environment variable names, 
+  ## like: POSTGRES_DB POSTGRES_USER POSTGRES_PASSWORD so we will need to replace the names in the env files to
+  # .env POSTGRES_DB=nestjsdb POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres
+
