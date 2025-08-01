@@ -5,7 +5,7 @@ services:
     image: postgres:15
     container_name: nest_postgres
     ports:
-      - "${DB_PORT}:5432"
+      - '${DB_PORT}:5432'
     environment: # Note below
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
@@ -16,24 +16,43 @@ services:
   nestjs-app:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       # Mount source code for hot reloading
       - .:/usr/src/app
       # Prevent node_modules from being overwritten
-      - /user/src/app/node_modules
+      - /usr/src/app/node_modules
     env_file: .env
-    command: "npm run start:dev"
+    command: 'npm run start:dev'
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 40  # Only show errors
+
+    depends_on:
+      - postgres
 
 volumes:
   pgdata:
-  
 
   ## Note:
 
   ## We can replace   environment: POSTGRES_DB: ${DB_NAME}  POSTGRES_USER: ${DB_USERNAME} POSTGRES_PASSWORD: ${DB_PASSWORD}
-  ## with   env_file: .env but the The Postgres container expects specific environment variable names, 
+  ## with   env_file: .env but the The Postgres container expects specific environment variable names,
   ## like: POSTGRES_DB POSTGRES_USER POSTGRES_PASSWORD so we will need to replace the names in the env files to
   # .env POSTGRES_DB=nestjsdb POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres
 
+  ## Steps to connect pgadmin4 to docker db
+  # Access it at: http://localhost:5050
+  # Add a new server:
+  # Host: postgres (Docker service name)
+  # Port: 5432
+  # Username: your DB user
+  # Password: your DB password
