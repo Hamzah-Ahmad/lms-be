@@ -17,4 +17,4 @@ import { TransformResponseInterceptor } from './interceptors/transform-response/
   ],
   exports: [],
 })
-export class CoreModule {}
+export class CommonModule {}
