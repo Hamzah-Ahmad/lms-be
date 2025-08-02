@@ -14,7 +14,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: configService.getOrThrow('DB_PASSWORD'),
   database: configService.getOrThrow('DB_NAME'),
   entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/src/migrations/*.js'],
+  migrations: ['dist/src/database/migrations/*.js'],
   migrationsRun: false,
   synchronize: false,
   logging: process.env.ENV !== 'production',
@@ -28,7 +28,11 @@ export default dataSource;
 
 // Migration guide here: https://javascript.plainenglish.io/nestjs-typeorm-migrations-in-2025-50214275ec8d
 
-// If running migrations in a local setup: npm run migration:generate -- src/migrations/CreateUserTable
-// If running migrations while Nestjs and Postgres are running in docker: docker-compose exec nestjs-app npm run migration:generate -- src/migrations/CreateUserTable
+// If running migrations in a local setup:
+//   npm run migration:generate -- src/database/migrations/CreateUserTable
 
-// For running the migraiton (nside docker): docker-compose exec nestjs-app npm run migration:run
+// If running migrations while NestJS and Postgres are running in Docker:
+//   docker-compose exec nestjs-app npm run migration:generate -- src/database/migrations/CreateUserTable
+
+// For running the migration (inside Docker):
+//   docker-compose exec nestjs-app npm run migration:run

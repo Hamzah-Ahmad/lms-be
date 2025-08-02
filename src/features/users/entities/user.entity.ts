@@ -28,8 +28,8 @@ export class User {
   role: UserRole;
 
 
-  @Column({ type: 'enum', enum: AuthProvider })
-  authProvider: UserRole;
+  @Column({ type: 'enum', enum: AuthProvider, default: AuthProvider.CREDENTIALS })
+  authProvider: AuthProvider;
 
   @CreateDateColumn()
   createdAt: Date;
