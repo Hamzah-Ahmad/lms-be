@@ -1,4 +1,12 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Course } from 'src/features/course/entities/course.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export enum UserRole {
   INSTRUCTOR = 'instructor',
@@ -6,8 +14,8 @@ export enum UserRole {
 }
 
 export enum AuthProvider {
-    GOOGLE = 'google',
-    CREDENTIALS = 'credentials'
+  GOOGLE = 'google',
+  CREDENTIALS = 'credentials',
 }
 
 @Entity()
@@ -27,14 +35,19 @@ export class User {
   @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
   role: UserRole;
 
-
-  @Column({ type: 'enum', enum: AuthProvider, default: AuthProvider.CREDENTIALS })
+  @Column({
+    type: 'enum',
+    enum: AuthProvider,
+    default: AuthProvider.CREDENTIALS,
+  })
   authProvider: AuthProvider;
+
+  @ManyToMany(() => Course, (course) => course.instructors)
+  courses: Course[];
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-  
 }

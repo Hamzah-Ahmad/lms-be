@@ -13,7 +13,7 @@ export class TransformResponseInterceptor implements NestInterceptor {
       map((response) => {
         if (!response) {
           return {
-            data: [],
+            data: null,
           };
         }
         if (response.data && response.meta) {
