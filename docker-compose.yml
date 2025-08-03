@@ -34,10 +34,22 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 40  # Only show errors
+    logging:
+      driver: none
+      # options:
+      #   max-size: "1m"
+      #   max-file: "1"
 
     depends_on:
       - postgres
+
+  # adminer:
+  #   image: adminer
+  #   depends_on:
+  #     - postgres
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
 
 volumes:
   pgdata:
@@ -56,3 +68,21 @@ volumes:
   # Port: 5432
   # Username: your DB user
   # Password: your DB password
+
+
+## Note: How to avoid pgadmin logs
+# Start all containers in detached (silent) mode
+# bash
+# Copy
+# Edit
+# docker compose up -d
+# This starts all services (postgres, nestjs-app, pgadmin, adminer) without showing logs in your terminal.
+
+# 2. View logs for just your NestJS app
+# bash
+# Copy
+# Edit
+# docker compose logs -f nestjs-app
+# -f means "follow" (live tail), like tail -f.
+
+# ✅ You'll now see only NestJS logs, nothing from pgAdmin or Adminer.
