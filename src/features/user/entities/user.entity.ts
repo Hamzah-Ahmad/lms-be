@@ -2,7 +2,9 @@ import { Course } from 'src/features/course/entities/course.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -43,11 +45,19 @@ export class User {
   authProvider: AuthProvider;
 
   @ManyToMany(() => Course, (course) => course.instructors)
-  courses: Course[];
+  @JoinTable()
+  authoredCourses: Course[];
+
+  @ManyToMany(() => Course, (course) => course.instructors)
+  @JoinTable()
+  enrolledCourses: Course[];
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

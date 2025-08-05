@@ -1,9 +1,12 @@
+import { Lesson } from 'src/features/lessons/entities/lesson.entity';
 import { User } from 'src/features/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -31,8 +34,14 @@ export class Course {
   @Column("text", { array: true })
   requirements: string[];
 
-  @ManyToMany(() => User, user => user.courses)
+  @ManyToMany(() => User, user => user.authoredCourses)
   instructors: User[];
+
+  @ManyToMany(() => User, user => user.enrolledCourses)
+  students: User[];
+
+  @OneToMany(() => Lesson, lesson => lesson.course)
+  lessons: Lesson[];
 
 
   @CreateDateColumn()
@@ -40,4 +49,8 @@ export class Course {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }
