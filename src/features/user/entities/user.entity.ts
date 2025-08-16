@@ -48,7 +48,7 @@ export class User {
   @JoinTable()
   authoredCourses: Course[];
 
-  @ManyToMany(() => Course, (course) => course.instructors)
+  @ManyToMany(() => Course, (course) => course.students)
   @JoinTable()
   enrolledCourses: Course[];
 

@@ -32,9 +32,12 @@ export class Video {
   })
   quality: VideoQuality;
 
-  @ManyToOne(() => Lesson, lesson => lesson.videos, {onDelete: 'CASCADE'})
-  lesson_id: string;
+  @ManyToOne(() => Lesson, (lesson) => lesson.videos, { onDelete: 'CASCADE' })
+  lesson: Lesson;
 
+  @Column()
+  lessonId: string; // This enables direct FK access without joining Lesson
+  
   @CreateDateColumn()
   createdAt: Date;
 

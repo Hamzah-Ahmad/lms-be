@@ -25,6 +25,13 @@ services:
     env_file: .env
     command: 'npm run start:dev'
 
+  lms-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - lms_redis_data:/data
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -53,6 +60,8 @@ services:
 
 volumes:
   pgdata:
+  lms_redis_data:
+
 
   ## Note:
 

@@ -25,7 +25,10 @@ export class Lesson {
   @ManyToOne(() => Course, (course) => course.lessons, { onDelete: 'CASCADE' })
   course: Course;
 
-  @OneToMany(() => Video, (video) => video.lesson_id)
+  @Column()
+  courseId: string; // FK for course relation
+
+  @OneToMany(() => Video, (video) => video.lesson)
   videos: Video[]
 
   @CreateDateColumn()
